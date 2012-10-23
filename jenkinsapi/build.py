@@ -262,3 +262,6 @@ class Build(JenkinsBase):
 
     def get_timestamp(self):
         return self._data['timestamp']
+
+    def is_failure(self):
+        return self.get_status() == "FAILURE"

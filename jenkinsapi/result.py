@@ -19,3 +19,9 @@ class Result(object):
         Calculate an ID for this object.
         """
         return "%s.%s" % ( self.className, self.name )
+
+    def is_failure(self):
+        """
+        Return true if the result is a failure
+        """
+        return self.status == "REGRESSION" or self.status == "FAILED"
