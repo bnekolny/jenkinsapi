@@ -60,6 +60,11 @@ class NoResults(JenkinsAPIException):
     A build did not publish any results.
     """
 
+class NoCoverage(JenkinsAPIException):
+    """
+    A build did not have code coverage.
+    """
+
 class FailedNoResults(NoResults):
     """
     A build did not publish any results because it failed

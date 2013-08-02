@@ -6,8 +6,9 @@ import datetime
 from jenkinsapi.artifact import Artifact
 from jenkinsapi import config
 from jenkinsapi.jenkinsbase import JenkinsBase
-from jenkinsapi.exceptions import NoResults
+from jenkinsapi.exceptions import NoResults, NoCoverage
 from jenkinsapi.constants import STATUS_SUCCESS
+from jenkinsapi.coverage import CoberturaCoverage
 from jenkinsapi.result_set import ResultSet
 
 from time import sleep
@@ -266,6 +267,22 @@ class Build(JenkinsBase):
         Return a boolean, true if a result set is available. false if not.
         """
         return self.STR_TOTALCOUNT in self.get_actions()
+
+    def get_coverage(self):
+        """
+        Obtain code coverage numbers for this build.
+        """
+        if not self.has_resultset():
+            raise NoResults("%s does not have any published results" % str(self) )
+        if not self.has_coverage():
+            raise NoCoverage("%s does not have any coverage" % str(self) )
+        return CoberturaCoverage( self.baseurl, self )
+        
+    def has_coverage(self):
+        """
+        Return a boolean, true if coverage results are available. false if not.
+        """
+        return True
 
     def get_actions(self):
         all_actions = {}
