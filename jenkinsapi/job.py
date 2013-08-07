@@ -513,3 +513,10 @@ class Job(JenkinsBase, MutableJenkinsThing):
         for param in self.get_params():
             params.append(param['name'])
         return params
+
+    def get_workspace_file(self, filename):
+        """
+        Returns the response of a file from the workspace
+        """
+        return self.get_jenkins_obj().requester.get_url("{0}/ws/{1}"\
+                .format(self.baseurl, filename)).content
