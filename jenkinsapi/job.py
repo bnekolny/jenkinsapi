@@ -5,6 +5,7 @@ import xml.etree.ElementTree as ET
 from collections import defaultdict
 from time import sleep
 from jenkinsapi.build import Build
+from jenkinsapi.coverage import CoberturaCoverage
 from jenkinsapi.invocation import Invocation
 from jenkinsapi.jenkinsbase import JenkinsBase
 from jenkinsapi.queue import QueueItem
@@ -520,3 +521,17 @@ class Job(JenkinsBase, MutableJenkinsThing):
         """
         return self.get_jenkins_obj().requester.get_url("{0}/ws/{1}"\
                 .format(self.baseurl, filename)).content
+
+    def get_coverage(self):
+        """
+        Obtain code coverage numbers for this build.
+        """
+        if not self.has_coverage():
+            raise NoCoverage("%s does not have any coverage" % str(self) )
+        return CoberturaCoverage( self.baseurl, self )
+        
+    def has_coverage(self):
+        """
+        Return a boolean, true if coverage results are available. false if not.
+        """
+        return True
